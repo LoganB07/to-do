@@ -1,0 +1,11 @@
+body {
+    display: grid;
+    grid-template-rows: 13fr, 87fr;
+    grid-template-columns: 1fr, 1fr;
+
+    background-color: #000000;
+
+    height: 100vh;
+    width: 100vw;
+}
+
