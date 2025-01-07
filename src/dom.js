@@ -44,7 +44,15 @@ function createProjectList(container) {
 
 function createProjectCard(container, project) {
     let card = createElement("div", "", ["card", project.priority]);
+    let projectInfoContainer = createElement("div", "", ["project-info-container"]);
+    let projectName = createElement("p", project.name, ["project-text"]);
+    let projectDescription = createElement("p", project.description, ["project-text", "project-description"]);
+    let projectDueDate = createElement("p", project.dueDate, ["project-text"]);
 
+    projectInfoContainer.appendChild(projectName);
+    projectInfoContainer.appendChild(projectDescription);
+    projectInfoContainer.appendChild(projectDueDate);
+    card.appendChild(projectInfoContainer);
     container.appendChild(card);
 }
 
