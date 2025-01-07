@@ -1,4 +1,4 @@
-import {requestJson} from "./logic.js";
+import {requestJson, createNewProject} from "./logic.js";
 
 function createElement(type, text, classList){
     let element = document.createElement(type);
@@ -27,6 +27,10 @@ function createTitle(container) {
 
 function createAddProjectBtn(container) {
     let button = createElement("button", "Add Project", ["btn", "add-project"]);
+    button.addEventListener("click", ()=>{
+        createNewProject();
+        loadHomepage();
+    });
     container.appendChild(button);
 }
 
@@ -53,7 +57,33 @@ function createProjectCard(container, project) {
     projectInfoContainer.appendChild(projectDescription);
     projectInfoContainer.appendChild(projectDueDate);
     card.appendChild(projectInfoContainer);
+
+    projectInfoContainer.addEventListener("click", ()=>{expandProject(project)});
+
     container.appendChild(card);
+}
+
+function expandProject(project) {
+    removeAllElements();
+    const body = document.getElementById("body");
+    body.classList.add("expanded-page");
+    console.log(project)
+
+    createProjectSidebar(project, body);
+    //createTaskList(project);
+}
+
+function createProjectSidebar(project, body) {
+    let sidebar = createElement("div", "", ["project-sidebar"]);
+    let projectTitle = createElement("p", project.name, ["title"]);
+    let projectDescription = createElement("p", project.description, ["project-side-text"]);
+    let projectDate = createElement("p", project.dueDate, ["title"]);
+    let sideItems = [projectTitle, projectDescription, projectDate];
+
+    sideItems.forEach(item => {
+        sidebar.appendChild(item);
+    });
+    body.appendChild(sidebar);
 }
 
 function loadHomepage(){

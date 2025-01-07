@@ -60,10 +60,9 @@ function addTask(projectIndex, data) {
     updateJson(toJSON(projectList));
 }
 
-let test = new Project("name", "desc", "date", "low");
-addJson(test);
+function createNewProject() {
+    let project = new Project("name", "desc", "date", "low");
+    addJson(project);
+}
 
-let data = ["task", "desc", "date", "high"];
-addTask(0, data);
-
-export {requestJson};
+export {requestJson, createNewProject};
