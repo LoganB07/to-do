@@ -107,6 +107,11 @@ function createProjectSidebar(project, body) {
         })
     });
     let editBtn = createElement("button", "Edit Project", ["btn"]);
+    editBtn.addEventListener("click", ()=>{
+        createForm();
+        //grabData();
+        //updateProject();
+    })
     let completeBtn = createElement("button", "Complete", ["btn", "btn-complete"]);
     completeBtn.addEventListener("click", ()=>{
         let title = document.getElementById("name");
@@ -137,6 +142,102 @@ function createTaskList(project, body) {
     });
 
     body.appendChild(taskContainer);
+}
+
+function createForm() {
+    let formBox = createElement("form", "", ["form-box"]);
+    formBox.id = "form";
+
+    let nameBox = createElement("div", "", ["text-input"]);
+    let nameLabel = createElement("label", "Name:", ["text-label"]);
+    setAttributes(nameLabel, [["for", "name"]]);
+
+    let nameInput = createElement("input", "", []);
+    setAttributes(nameInput, [["type", "text"], ["id", "name"], ["name", "name"]]);
+    nameBox.appendChild(nameLabel);
+    nameBox.appendChild(nameInput);
+
+    let descBox = createElement("div", "", ["desc-input"]);
+    let descLabel = createElement("label", "Description:", ["text-label"]);
+    setAttributes(nameLabel, [["for", "description"]]);
+
+    let descInput = createElement("input", "", []);
+    setAttributes(nameInput, [["type", "text"], ["id", "description"], ["name", "description"]]);
+    descBox.appendChild(descLabel);
+    descBox.appendChild(descInput);
+
+    let dateBox = createElement("div", "", ["date-input"]);
+
+    let dateBoxLabel = createElement("p", "Due By:", ["text-label"]);
+
+    let monthLabel = createElement("label", "MM", []);
+    setAttributes(monthLabel, [["for", "month"]]);
+    let month = createElement("input", "", []);
+    setAttributes(month, [["type", "text"], ["id", "month"], ["name", "month"]]);
+
+    let slash = createElement("p", "/", ["slash"]);
+
+    let dayLabel = createElement("label", "DD", []);
+    setAttributes(dayLabel, [["for", "day"]]);
+    let day = createElement("input", "", []);
+    setAttributes(day, [["type", "text"], ["id", "day"], ["name", "day"]]);
+
+    let slash2 = createElement("p", "/", ["slash"]);
+
+    let yearLabel = createElement("label", "YYYY", []);
+    setAttributes(yearLabel, [["for", "year"]]);
+    let year = createElement("input", "", []);
+    setAttributes(year, [["type", "text"], ["id", "year"], ["name", "year"]]);
+
+    dateBox.appendChild(dateBoxLabel);
+    dateBox.appendChild(monthLabel);
+    dateBox.appendChild(month);
+    dateBox.appendChild(slash);
+    dateBox.appendChild(dayLabel);
+    dateBox.appendChild(day);
+    dateBox.appendChild(slash2);
+    dateBox.appendChild(yearLabel);
+    dateBox.appendChild(year);
+
+    let priorityBox = createElement("div", "", ["priority-box"]);
+    let text = createElement("p", "Priority:", ["text-label"]);
+
+    let lowLabel = createElement("label", "Low", []);
+    setAttributes(lowLabel, [["for", "low"]]);
+    let low = createElement("input", "", []);
+    setAttributes(low, [["type", "radio"], ["id", "low"], ["name", "priority"]]);
+
+    let midLabel = createElement("label", "Mid", []);
+    setAttributes(midLabel, [["for", "mid"]]);
+    let mid = createElement("input", "", []);
+    setAttributes(mid, [["type", "radio"], ["id", "mid"], ["name", "priority"]]);
+
+    let highLabel = createElement("label", "High", []);
+    setAttributes(highLabel, [["for", "high"]]);
+    let high = createElement("input", "", []);
+    setAttributes(high, [["type", "radio"], ["id", "high"], ["name", "priority"]]);
+
+    priorityBox.appendChild(text);
+    priorityBox.appendChild(lowLabel);
+    priorityBox.appendChild(low);
+    priorityBox.appendChild(midLabel);
+    priorityBox.appendChild(mid);
+    priorityBox.appendChild(highLabel);
+    priorityBox.appendChild(high);
+
+    formBox.appendChild(nameBox);
+    formBox.appendChild(descBox);
+    formBox.appendChild(dateBox);
+    formBox.appendChild(priorityBox);
+
+    let body = document.getElementById("body");
+    body.appendChild(formBox);
+}
+
+function setAttributes(element ,attributes) {
+    attributes.forEach(item => {
+        element.setAttribute(item[0], item[1]);
+    });
 }
 
 

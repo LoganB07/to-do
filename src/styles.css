@@ -3,6 +3,10 @@ p {
     padding: 0;
 }
 
+body {
+    position: relative;
+}
+
 .homepage {
     display: grid;
     grid-template-rows: 13fr, 87fr;
@@ -168,4 +172,42 @@ p {
 
 .btn-delete {
     background-color: #FC5353;
+}
+
+.form-box {
+    position: absolute;
+    left: 30vw;
+    top: 15vh;
+
+    background-color: #000000;
+
+    height: 70vh;
+    width: 50vw;
+
+    border: solid 2px #0BCEFF;
+    border-radius: 25px;
+}
+
+.name-input {
+    display: grid;
+    grid-template-columns: 1fr, 3fr;
+}
+
+.text-label {
+    grid-area: 1/1/2/2;
+
+    color: #0BCEFF;
+}
+
+#name {
+    grid-area: 1/2/2/3;
+}
+
+#description {
+    grid-area: 1/2/2/3;
+}
+
+.desc-input {
+    display: grid;
+    grid-template-columns: 1fr, 2fr;
 }
