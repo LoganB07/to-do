@@ -1,4 +1,4 @@
-import {requestJson, createNewProject} from "./logic.js";
+import {requestJson, createNewProject, addTask, deleteProject} from "./logic.js";
 
 function createElement(type, text, classList){
     let element = document.createElement(type);
@@ -40,26 +40,41 @@ function createProjectList(container) {
     console.log(projectList);
 
     projectList.forEach(project => {
-        createProjectCard(projectContainer, project);
+        createCard(projectContainer, project, true);
     });
 
     container.appendChild(projectContainer);
 }
 
-function createProjectCard(container, project) {
-    let card = createElement("div", "", ["card", project.priority]);
+function createCard(container, object, isProject) {
+    let card = createElement("div", "", ["card", object.priority]);
     let projectInfoContainer = createElement("div", "", ["project-info-container"]);
-    let projectName = createElement("p", project.name, ["project-text"]);
-    let projectDescription = createElement("p", project.description, ["project-text", "project-description"]);
-    let projectDueDate = createElement("p", project.dueDate, ["project-text"]);
+    let projectName = createElement("p", object.name, ["project-text"]);
+    let projectDescription = createElement("p", object.description, ["project-text", "project-description"]);
+    let projectDueDate = createElement("p", object.dueDate, ["project-text"]);
 
     projectInfoContainer.appendChild(projectName);
     projectInfoContainer.appendChild(projectDescription);
     projectInfoContainer.appendChild(projectDueDate);
+    
+
+    if (isProject) {
+        projectInfoContainer.addEventListener("click", ()=>{expandProject(object)});
+    }
+
+    else {
+        let completeBtn = createElement("button", "Complete", ["task-btn", "btn-complete"]);
+        let editBtn = createElement("button", "Edit", ["task-btn"]);
+        let deleteBtn = createElement("button", "Delete", ["task-btn", "btn-delete"]);
+
+        let btnContainer = createElement("div", "", ["btn-container"]);
+        btnContainer.appendChild(completeBtn);
+        btnContainer.appendChild(editBtn);
+        btnContainer.appendChild(deleteBtn);
+
+        projectInfoContainer.appendChild(btnContainer);
+    }
     card.appendChild(projectInfoContainer);
-
-    projectInfoContainer.addEventListener("click", ()=>{expandProject(project)});
-
     container.appendChild(card);
 }
 
@@ -70,21 +85,60 @@ function expandProject(project) {
     console.log(project)
 
     createProjectSidebar(project, body);
-    //createTaskList(project);
+    createTaskList(project, body);
 }
 
 function createProjectSidebar(project, body) {
     let sidebar = createElement("div", "", ["project-sidebar"]);
     let projectTitle = createElement("p", project.name, ["title"]);
+    projectTitle.id = "name";
     let projectDescription = createElement("p", project.description, ["project-side-text"]);
     let projectDate = createElement("p", project.dueDate, ["title"]);
-    let sideItems = [projectTitle, projectDescription, projectDate];
+    let addTaskBtn = createElement("button", "Add Task", ["btn"]);
+    addTaskBtn.addEventListener("click", ()=>{
+        let title = document.getElementById("name");
+        let name = title.textContent;
+        addTask(name);
+        let projectList = requestJson();
+        projectList.forEach(project=>{
+            if (name == project.name) {
+                expandProject(project);
+            }
+        })
+    });
+    let editBtn = createElement("button", "Edit Project", ["btn"]);
+    let completeBtn = createElement("button", "Complete", ["btn", "btn-complete"]);
+    completeBtn.addEventListener("click", ()=>{
+        let title = document.getElementById("name");
+        let name = title.textContent;
+        deleteProject(name);
+        loadHomepage();
+    });
+    let deleteBtn = createElement("button", "Delete", ["btn", "btn-delete"]);
+    deleteBtn.addEventListener("click", ()=>{
+        let title = document.getElementById("name");
+        let name = title.textContent;
+        deleteProject(name);
+        loadHomepage();
+    });
+    let sideItems = [projectTitle, projectDescription, projectDate, addTaskBtn, editBtn, completeBtn, deleteBtn];
 
     sideItems.forEach(item => {
         sidebar.appendChild(item);
     });
     body.appendChild(sidebar);
 }
+
+function createTaskList(project, body) {
+    let taskContainer = createElement("div", "", ["task-container"]);
+
+    project.tasks.forEach(task=>{
+        createCard(taskContainer, task, false);
+    });
+
+    body.appendChild(taskContainer);
+}
+
 
 function loadHomepage(){
     removeAllElements();

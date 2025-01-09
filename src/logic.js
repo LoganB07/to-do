@@ -51,18 +51,56 @@ function updateJson(array){
     localStorage.clear("projects");
     localStorage.setItem("projects", array);
 }
-function addTask(projectIndex, data) {
-    let task = new Task(data[0], data[1], data[2], data[3]);
+function addTask(projectName) {
+    let task = new Task("Name", "Description", "Date", "low");
 
     let projectList = requestJson();
-    projectList[projectIndex].tasks.push(task);
+    projectList.forEach(project => {
+        if (projectName == project.name) {
+            project.tasks.push(task);
+        }
+    });
 
     updateJson(toJSON(projectList));
 }
 
+
 function createNewProject() {
-    let project = new Project("name", "desc", "date", "low");
+    let projectList = requestJson();
+    let projectCount;
+    if(projectList != null) {
+        projectCount = projectList.length;
+    }
+    else {
+        projectCount = 0;
+    }
+    let name = `Project${projectCount}`;
+    let project = new Project(name , "Description", "Date", "low");
     addJson(project);
 }
 
-export {requestJson, createNewProject};
+function deleteProject(name) {
+    let projectList = requestJson();
+    let index = 0;
+    console.log(name);
+    projectList.forEach(project => {
+        if (name == project.name) {
+            console.log("match found");
+            let newList = [];
+            for (let i = 0; i < index; i++) {
+                newList.push(projectList[i]);
+            }
+            for (let i = index + 1; i < projectList.length; i ++) {
+                newList.push(projectList[i]);
+            }
+            updateJson(toJSON(newList));
+        }
+        else {
+            index += 1;
+            console.log(index);
+        }
+    });
+    
+}
+
+export {requestJson, createNewProject, addTask, deleteProject};
